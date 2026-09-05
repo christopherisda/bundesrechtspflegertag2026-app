@@ -1,360 +1,701 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#123868">
+  <title>Bundesrechtspflegertag 2026</title>
 
-<title>Bundesrechtspflegertag 2026</title>
+  <style>
+    :root {
+      --primary: #17508a;
+      --primary-dark: #123868;
+      --primary-light: #eaf3fc;
+      --background: #f4f7fb;
+      --surface: #ffffff;
+      --text: #202938;
+      --muted: #667085;
+      --border: #dce5ef;
+      --gold: #e2a800;
+      --danger: #9b1c1c;
+      --shadow: 0 5px 18px rgba(18, 56, 104, 0.10);
+    }
 
-<style>
+    * {
+      box-sizing: border-box;
+    }
 
-*{
-    box-sizing:border-box;
-}
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--background);
+      color: var(--text);
+      line-height: 1.5;
+    }
 
-body{
-    margin:0;
-    font-family:Arial,Helvetica,sans-serif;
-    background:#f4f7fb;
-    color:#222;
-}
+    button,
+    a {
+      font: inherit;
+    }
 
-header{
-    background:linear-gradient(135deg,#123868,#1d5aa6);
-    color:white;
-    padding:30px 20px;
-}
+    header {
+      color: white;
+      background: linear-gradient(135deg, var(--primary-dark), #1d5aa6);
+      padding: 32px 20px 42px;
+    }
 
-header h1{
-    margin:0;
-    font-size:1.8rem;
-}
+    .header-inner {
+      width: min(900px, 100%);
+      margin: auto;
+    }
 
-header p{
-    margin-top:8px;
-    opacity:.9;
-}
+    header h1 {
+      margin: 0;
+      font-size: clamp(1.65rem, 5vw, 2.35rem);
+      line-height: 1.15;
+    }
 
-main{
-    max-width:900px;
-    margin:auto;
-    padding:20px;
-}
+    header p {
+      margin: 10px 0 0;
+      opacity: 0.92;
+    }
 
-.card{
-    background:white;
-    border-radius:16px;
-    padding:20px;
-    margin-bottom:20px;
-    box-shadow:0 3px 12px rgba(0,0,0,.08);
-}
+    main {
+      width: min(900px, 100%);
+      margin: -20px auto 0;
+      padding: 0 18px 40px;
+    }
 
-.card h2{
-    margin-top:0;
-}
+    .card {
+      background: var(--surface);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
 
-#status{
-    background:#eef4ff;
-    padding:12px;
-    border-radius:10px;
-    margin-bottom:15px;
-}
+    .card-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
 
-.tabs{
-    display:flex;
-    gap:8px;
-    overflow-x:auto;
-    margin-bottom:20px;
-}
+    .card h2 {
+      margin: 0;
+      font-size: 1.35rem;
+    }
 
-.tab{
-    border:none;
-    background:#dfeafc;
-    padding:10px 14px;
-    border-radius:10px;
-    cursor:pointer;
-    font-weight:bold;
-    white-space:nowrap;
-}
+    #status {
+      background: #eef4ff;
+      color: #334e68;
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
 
-.tab.active{
-    background:#17508a;
-    color:white;
-}
+    #status.error {
+      background: #fff0f0;
+      color: var(--danger);
+    }
 
-.event{
-    border-left:5px solid #17508a;
-    background:#fafcff;
-    border-radius:10px;
-    padding:15px;
-    margin-bottom:15px;
-}
+    .tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 2px 0 12px;
+      margin-bottom: 8px;
+      scrollbar-width: thin;
+    }
 
-.event:last-child{
-    margin-bottom:0;
-}
+    .tab {
+      flex: 0 0 auto;
+      border: 1px solid transparent;
+      background: #dfeafc;
+      color: #174a7d;
+      padding: 10px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 700;
+      white-space: nowrap;
+    }
 
-.zeit{
-    color:#17508a;
-    font-weight:bold;
-    margin-bottom:8px;
-}
+    .tab:hover,
+    .tab:focus-visible {
+      border-color: var(--primary);
+      outline: none;
+    }
 
-.event h3{
-    margin:0 0 10px;
-}
+    .tab.active {
+      background: var(--primary);
+      color: white;
+    }
 
-.ort{
-    margin-bottom:8px;
-}
+    .event {
+      position: relative;
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--primary);
+      background: #fbfdff;
+      border-radius: 13px;
+      padding: 17px;
+      margin-bottom: 15px;
+    }
 
-.tag{
-    display:inline-block;
-    background:#eaf3fc;
-    color:#17508a;
-    padding:4px 8px;
-    border-radius:16px;
-    font-size:.85rem;
-}
+    .event:last-child {
+      margin-bottom: 0;
+    }
 
-.preis{
-    margin-top:8px;
-    color:#666;
-}
+    .event-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+    }
 
-.leer{
-    text-align:center;
-    padding:30px;
-    color:#666;
-}
+    .event-main {
+      min-width: 0;
+    }
 
-</style>
+    .zeit {
+      color: var(--primary);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .event h3 {
+      margin: 0 0 10px;
+      font-size: 1.12rem;
+      line-height: 1.3;
+    }
+
+    .favorite {
+      flex: 0 0 auto;
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: white;
+      color: #a6afbb;
+      cursor: pointer;
+      font-size: 1.35rem;
+      line-height: 1;
+    }
+
+    .favorite:hover,
+    .favorite:focus-visible {
+      border-color: var(--gold);
+      outline: none;
+    }
+
+    .favorite.active {
+      color: var(--gold);
+      background: #fff8dc;
+      border-color: #f0cb54;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      margin: 10px 0;
+      color: #4b5565;
+    }
+
+    .tag {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .beschreibung {
+      margin: 12px 0 0;
+      color: #3f4b5b;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 9px 13px;
+      border-radius: 9px;
+      border: 1px solid transparent;
+      text-decoration: none;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-details {
+      color: var(--primary);
+      background: var(--primary-light);
+      border-color: #cbdff3;
+    }
+
+    .btn-map {
+      color: white;
+      background: var(--primary);
+    }
+
+    .btn:hover,
+    .btn:focus-visible {
+      filter: brightness(0.96);
+      outline: 3px solid rgba(23, 80, 138, 0.18);
+    }
+
+    .details-panel {
+      display: none;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      color: #344054;
+      white-space: pre-line;
+    }
+
+    .details-panel.open {
+      display: block;
+    }
+
+    .leer {
+      text-align: center;
+      padding: 34px 16px;
+      color: var(--muted);
+    }
+
+    .footer-note {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+      padding: 4px 12px 22px;
+    }
+
+    @media (max-width: 560px) {
+      header {
+        padding-top: 25px;
+      }
+
+      main {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .card {
+        padding: 16px;
+      }
+
+      .event {
+        padding: 14px;
+      }
+
+      .actions .btn {
+        flex: 1 1 140px;
+      }
+    }
+  </style>
 </head>
-
 <body>
-
-<header>
-    <h1>⚖️ Bundesrechtspflegertag 2026</h1>
-    <p>Erfurt · 21.09. bis 25.09.2026</p>
-</header>
-
-<main>
-
-<div class="card">
-
-    <h2>📅 Veranstaltungsprogramm</h2>
-
-    <div id="status">
-        Veranstaltungen werden geladen...
+  <header>
+    <div class="header-inner">
+      <h1>⚖️ Bundesrechtspflegertag 2026</h1>
+      <p>Erfurt · 21.09. bis 25.09.2026</p>
     </div>
+  </header>
 
-    <div class="tabs">
+  <main>
+    <section class="card">
+      <div class="card-heading">
+        <h2>📅 Veranstaltungsprogramm</h2>
+      </div>
 
-        <button class="tab active"
-            onclick="filterDay('Alle',this)">
-            Alle
-        </button>
+      <div id="status" aria-live="polite">
+        Veranstaltungen werden geladen …
+      </div>
 
-        <button class="tab"
-            onclick="filterDay('Montag',this)">
-            Montag
-        </button>
+      <nav class="tabs" aria-label="Programm nach Wochentag filtern">
+        <button type="button" class="tab active" data-day="Alle">Alle</button>
+        <button type="button" class="tab" data-day="Montag">Montag</button>
+        <button type="button" class="tab" data-day="Dienstag">Dienstag</button>
+        <button type="button" class="tab" data-day="Mittwoch">Mittwoch</button>
+        <button type="button" class="tab" data-day="Donnerstag">Donnerstag</button>
+        <button type="button" class="tab" data-day="Freitag">Freitag</button>
+        <button type="button" class="tab" data-day="Favoriten">⭐ Meine Termine</button>
+      </nav>
 
-        <button class="tab"
-            onclick="filterDay('Dienstag',this)">
-            Dienstag
-        </button>
+      <div id="events"></div>
+    </section>
 
-        <button class="tab"
-            onclick="filterDay('Mittwoch',this)">
-            Mittwoch
-        </button>
-
-        <button class="tab"
-            onclick="filterDay('Donnerstag',this)">
-            Donnerstag
-        </button>
-
-        <button class="tab"
-            onclick="filterDay('Freitag',this)">
-            Freitag
-        </button>
-
+    <div class="footer-note">
+      Änderungen im veröffentlichten Events-Blatt werden beim erneuten Laden übernommen.
     </div>
+  </main>
 
-    <div id="events"></div>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script>
+    "use strict";
 
-</div>
+    const CSV_URL =
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vSyQFnRpxoLtmmado9nrE2CKlA7rfjNkaYCf5WgqQBwLoAXa2ZL4-RCL6Fqy12zaDXUGrOx2cUEDMOz/pub?gid=473122804&single=true&output=csv";
 
-</main>
+    const eventsElement = document.getElementById("events");
+    const statusElement = document.getElementById("status");
+    const tabs = document.querySelectorAll(".tab");
 
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    const dayOrder = {
+      Montag: 1,
+      Dienstag: 2,
+      Mittwoch: 3,
+      Donnerstag: 4,
+      Freitag: 5
+    };
 
-<script>
+    let alleEvents = [];
+    let aktiverFilter = "Alle";
 
-const CSV_URL =
-"https://docs.google.com/spreadsheets/d/e/2PACX-1vSyQFnRpxoLtmmado9nrE2CKlA7rfjNkaYCf5WgqQBwLoAXa2ZL4-RCL6Fqy12zaDXUGrOx2cUEDMOz/pub?gid=473122804&single=true&output=csv";
-
-const eventsElement =
-document.getElementById("events");
-
-const statusElement =
-document.getElementById("status");
-
-let alleEvents = [];
-
-Papa.parse(CSV_URL, {
-
-    download:true,
-
-    header:true,
-
-    skipEmptyLines:true,
-
-    transformHeader(header){
-        return header.trim().toLowerCase();
-    },
-
-    complete:function(results){
-
-        alleEvents =
-        results.data.filter(
-            e => e.titel && e.titel.trim() !== ""
-        );
-
-        sortiereEvents();
-
-        statusElement.innerHTML =
-            "<strong>" +
-            alleEvents.length +
-            " Veranstaltungen gefunden</strong>";
-
-        renderEvents(alleEvents);
-    },
-
-    error:function(){
-
-        statusElement.innerHTML =
-            "Programm konnte nicht geladen werden.";
-    }
-
-});
-
-function sortiereEvents(){
-
-    alleEvents.sort(function(a,b){
-
-        return (a.uhrzeit || "")
-            .localeCompare(b.uhrzeit || "");
-
-    });
-}
-
-function renderEvents(liste){
-
-    eventsElement.innerHTML = "";
-
-    if(liste.length === 0){
-
-        eventsElement.innerHTML =
-        '<div class="leer">Keine Veranstaltungen vorhanden.</div>';
-
-        return;
-    }
-
-    liste.forEach(function(event){
-
-        const artikel =
-        document.createElement("div");
-
-        artikel.className = "event";
-
-        artikel.innerHTML =
-
-        '<div class="zeit">' +
-
-        (event.tag || "") +
-
-        ' · ' +
-
-        (event.uhrzeit || "") +
-
-        '</div>' +
-
-        '<h3>' +
-
-        (event.titel || "") +
-
-        '</h3>' +
-
-        '<div class="ort">📍 ' +
-
-        (event.ort || "") +
-
-        '</div>' +
-
-        '<span class="tag">' +
-
-        (event.kategorie || "") +
-
-        '</span>' +
-
-        '<div class="preis">💶 ' +
-
-        (event.preis || "") +
-
-        '</div>' +
-
-        '<p>' +
-
-        (event.beschreibung || "") +
-
-        '</p>';
-
-        eventsElement
-            .appendChild(artikel);
-
+    tabs.forEach(function(button) {
+      button.addEventListener("click", function() {
+        filterDay(button.dataset.day, button);
+      });
     });
 
-}
-
-function filterDay(tag,button){
-
-    document
-        .querySelectorAll(".tab")
-        .forEach(t =>
-            t.classList.remove("active"));
-
-    button.classList.add("active");
-
-    if(tag === "Alle"){
-
-        renderEvents(alleEvents);
-
-        statusElement.innerHTML =
-            "<strong>" +
-            alleEvents.length +
-            " Veranstaltungen</strong>";
-
-        return;
+    if (typeof Papa === "undefined") {
+      showError("Die CSV-Bibliothek konnte nicht geladen werden. Bitte die Seite neu laden.");
+    } else {
+      loadEvents();
     }
 
-    const gefiltert =
-        alleEvents.filter(
-            e => e.tag === tag
-        );
+    function loadEvents() {
+      Papa.parse(CSV_URL, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
 
-    statusElement.innerHTML =
-        "<strong>" +
-        gefiltert.length +
-        " Veranstaltungen am " +
-        tag +
-        "</strong>";
+        transformHeader: function(header) {
+          return String(header || "").trim().toLowerCase();
+        },
 
-    renderEvents(gefiltert);
-}
+        complete: function(results) {
+          alleEvents = results.data
+            .map(normalizeEvent)
+            .filter(function(event) {
+              return event.titel !== "";
+            });
 
-</script>
+          sortiereEvents();
 
+          if (alleEvents.length === 0) {
+            showError("Die Tabelle wurde geladen, enthält aber keine erkennbaren Veranstaltungen.");
+            renderEvents([]);
+            return;
+          }
+
+          updateStatus(alleEvents.length, "Alle");
+          renderEvents(alleEvents);
+        },
+
+        error: function(error) {
+          console.error("Fehler beim Laden des Programms:", error);
+          showError("Das Programm konnte nicht geladen werden. Bitte später erneut versuchen.");
+        }
+      });
+    }
+
+    function normalizeEvent(event) {
+      const normalized = {};
+
+      Object.keys(event || {}).forEach(function(key) {
+        normalized[String(key).trim().toLowerCase()] = String(event[key] || "").trim();
+      });
+
+      return {
+        id: normalized.id || createFallbackId(normalized),
+        tag: normalized.tag || "",
+        datum: normalized.datum || "",
+        uhrzeit: normalized.uhrzeit || "",
+        titel: normalized.titel || "",
+        ort: normalized.ort || "",
+        kategorie: normalized.kategorie || "",
+        preis: normalized.preis || "",
+        beschreibung: normalized.beschreibung || "",
+        details: normalized.details || "",
+        maps_link: normalized.maps_link || "",
+        geaendert_am: normalized["geändert_am"] || normalized.geaendert_am || ""
+      };
+    }
+
+    function createFallbackId(event) {
+      return [event.tag, event.uhrzeit, event.titel]
+        .join("-")
+        .toLowerCase()
+        .replace(/[^a-z0-9äöüß]+/gi, "-")
+        .replace(/^-|-$/g, "");
+    }
+
+    function sortiereEvents() {
+      alleEvents.sort(function(a, b) {
+        const dayDifference = (dayOrder[a.tag] || 99) - (dayOrder[b.tag] || 99);
+
+        if (dayDifference !== 0) {
+          return dayDifference;
+        }
+
+        return timeToMinutes(a.uhrzeit) - timeToMinutes(b.uhrzeit);
+      });
+    }
+
+    function timeToMinutes(time) {
+      const match = String(time || "").match(/(\d{1,2})[:.]?(\d{2})?/);
+
+      if (!match) {
+        return 9999;
+      }
+
+      return Number(match[1]) * 60 + Number(match[2] || 0);
+    }
+
+    function renderEvents(liste) {
+      eventsElement.replaceChildren();
+
+      if (liste.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "leer";
+        empty.textContent = aktiverFilter === "Favoriten"
+          ? "Du hast noch keine Termine als Favorit markiert."
+          : "Für diese Auswahl sind keine Veranstaltungen vorhanden.";
+        eventsElement.appendChild(empty);
+        return;
+      }
+
+      liste.forEach(function(event) {
+        eventsElement.appendChild(createEventCard(event));
+      });
+    }
+
+    function createEventCard(event) {
+      const article = document.createElement("article");
+      article.className = "event";
+
+      const top = document.createElement("div");
+      top.className = "event-top";
+
+      const main = document.createElement("div");
+      main.className = "event-main";
+
+      const time = document.createElement("div");
+      time.className = "zeit";
+      time.textContent = [event.tag, event.datum, event.uhrzeit]
+        .filter(Boolean)
+        .join(" · ");
+
+      const title = document.createElement("h3");
+      title.textContent = event.titel;
+
+      main.append(time, title);
+
+      const favoriteButton = document.createElement("button");
+      favoriteButton.type = "button";
+      favoriteButton.className = "favorite";
+      favoriteButton.textContent = "★";
+      favoriteButton.setAttribute("aria-label", "Termin als Favorit markieren");
+      favoriteButton.title = "Termin merken";
+
+      if (isFavorite(event.id)) {
+        favoriteButton.classList.add("active");
+        favoriteButton.setAttribute("aria-pressed", "true");
+      } else {
+        favoriteButton.setAttribute("aria-pressed", "false");
+      }
+
+      favoriteButton.addEventListener("click", function() {
+        toggleFavorite(event.id, favoriteButton);
+      });
+
+      top.append(main, favoriteButton);
+      article.appendChild(top);
+
+      const meta = document.createElement("div");
+      meta.className = "meta";
+
+      if (event.ort) {
+        const location = document.createElement("span");
+        location.textContent = "📍 " + event.ort;
+        meta.appendChild(location);
+      }
+
+      if (event.preis) {
+        const price = document.createElement("span");
+        price.textContent = "💶 " + event.preis;
+        meta.appendChild(price);
+      }
+
+      if (meta.childNodes.length > 0) {
+        article.appendChild(meta);
+      }
+
+      if (event.kategorie) {
+        const category = document.createElement("span");
+        category.className = "tag";
+        category.textContent = event.kategorie;
+        article.appendChild(category);
+      }
+
+      if (event.beschreibung) {
+        const description = document.createElement("p");
+        description.className = "beschreibung";
+        description.textContent = event.beschreibung;
+        article.appendChild(description);
+      }
+
+      const hasDetails = event.details !== "";
+      const hasMap = isSafeHttpUrl(event.maps_link);
+
+      if (hasDetails || hasMap) {
+        const actions = document.createElement("div");
+        actions.className = "actions";
+
+        if (hasDetails) {
+          const detailsId = "details-" + safeDomId(event.id);
+          const detailsButton = document.createElement("button");
+          detailsButton.type = "button";
+          detailsButton.className = "btn btn-details";
+          detailsButton.textContent = "Weitere Informationen";
+          detailsButton.setAttribute("aria-expanded", "false");
+          detailsButton.setAttribute("aria-controls", detailsId);
+
+          const detailsPanel = document.createElement("div");
+          detailsPanel.id = detailsId;
+          detailsPanel.className = "details-panel";
+          detailsPanel.textContent = event.details;
+
+          detailsButton.addEventListener("click", function() {
+            const isOpen = detailsPanel.classList.toggle("open");
+            detailsButton.setAttribute("aria-expanded", String(isOpen));
+            detailsButton.textContent = isOpen
+              ? "Informationen schließen"
+              : "Weitere Informationen";
+          });
+
+          actions.appendChild(detailsButton);
+          article.appendChild(actions);
+          article.appendChild(detailsPanel);
+        }
+
+        if (hasMap) {
+          let existingActions = article.querySelector(".actions");
+
+          if (!existingActions) {
+            existingActions = document.createElement("div");
+            existingActions.className = "actions";
+            article.appendChild(existingActions);
+          }
+
+          const mapLink = document.createElement("a");
+          mapLink.className = "btn btn-map";
+          mapLink.href = event.maps_link;
+          mapLink.target = "_blank";
+          mapLink.rel = "noopener noreferrer";
+          mapLink.textContent = "📍 In Google Maps öffnen";
+          existingActions.appendChild(mapLink);
+        }
+      }
+
+      return article;
+    }
+
+    function filterDay(day, button) {
+      aktiverFilter = day;
+
+      tabs.forEach(function(tab) {
+        tab.classList.remove("active");
+      });
+      button.classList.add("active");
+
+      let filtered;
+
+      if (day === "Alle") {
+        filtered = alleEvents;
+      } else if (day === "Favoriten") {
+        filtered = alleEvents.filter(function(event) {
+          return isFavorite(event.id);
+        });
+      } else {
+        filtered = alleEvents.filter(function(event) {
+          return event.tag.toLowerCase() === day.toLowerCase();
+        });
+      }
+
+      updateStatus(filtered.length, day);
+      renderEvents(filtered);
+    }
+
+    function updateStatus(count, filter) {
+      statusElement.classList.remove("error");
+
+      if (filter === "Alle") {
+        statusElement.textContent = count + " Veranstaltungen gefunden";
+      } else if (filter === "Favoriten") {
+        statusElement.textContent = count + " gemerkte Termine";
+      } else {
+        statusElement.textContent = count + " Veranstaltungen am " + filter;
+      }
+    }
+
+    function showError(message) {
+      statusElement.classList.add("error");
+      statusElement.textContent = message;
+    }
+
+    function favoriteKey(id) {
+      return "brt2026_favorite_" + id;
+    }
+
+    function isFavorite(id) {
+      return localStorage.getItem(favoriteKey(id)) === "1";
+    }
+
+    function toggleFavorite(id, button) {
+      if (isFavorite(id)) {
+        localStorage.removeItem(favoriteKey(id));
+        button.classList.remove("active");
+        button.setAttribute("aria-pressed", "false");
+      } else {
+        localStorage.setItem(favoriteKey(id), "1");
+        button.classList.add("active");
+        button.setAttribute("aria-pressed", "true");
+      }
+
+      if (aktiverFilter === "Favoriten") {
+        const favoriteEvents = alleEvents.filter(function(event) {
+          return isFavorite(event.id);
+        });
+        updateStatus(favoriteEvents.length, "Favoriten");
+        renderEvents(favoriteEvents);
+      }
+    }
+
+    function isSafeHttpUrl(value) {
+      try {
+        const url = new URL(value);
+        return url.protocol === "https:" || url.protocol === "http:";
+      } catch (error) {
+        return false;
+      }
+    }
+
+    function safeDomId(value) {
+      return String(value || "event")
+        .replace(/[^a-zA-Z0-9_-]/g, "-");
+    }
+  </script>
 </body>
 </html>
