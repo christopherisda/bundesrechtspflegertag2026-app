@@ -68,6 +68,10 @@
       border-radius: 10px;
     }
 
+    .event:last-child {
+      margin-bottom: 0;
+    }
+
     .event h3 {
       margin: 7px 0 10px;
     }
@@ -93,7 +97,7 @@
     }
 
     .error {
-      color: #8b1e1e;
+      color: #8b1e1e !important;
       background: #fff0f0 !important;
     }
   </style>
@@ -127,7 +131,10 @@
     const statusElement = document.getElementById("status");
     const eventsElement = document.getElementById("events");
 
-    function text(wert) {
+    statusElement.textContent = "Verbindung zum Programm wird hergestellt …";
+    console.log("JavaScript wurde gestartet.");
+
+    function sichererText(wert) {
       const element = document.createElement("div");
       element.textContent = wert || "";
       return element.innerHTML;
@@ -138,10 +145,14 @@
       header: true,
       skipEmptyLines: true,
 
+      transformHeader: function(header) {
+        return header.trim().toLowerCase();
+      },
+
       complete: function(results) {
-        console.log("Erkannte Überschriften:", results.meta.fields);
-        console.log("Geladene Daten:", results.data);
-        console.log("Fehler:", results.errors);
+        console.log("Überschriften:", results.meta.fields);
+        console.log("Daten:", results.data);
+        console.log("CSV-Fehler:", results.errors);
 
         const events = results.data.filter(function(event) {
           return event.titel && event.titel.trim() !== "";
@@ -150,5 +161,67 @@
         if (events.length === 0) {
           statusElement.classList.add("error");
           statusElement.innerHTML =
-            "<strong>Die Tabelle wurde geladen, aber es wurden keine Events erkannt.</strong>" +
-            "<p>Prüfe, ob die 
+            "<strong>Die Tabelle wurde geladen, aber keine Veranstaltungen wurden erkannt.</strong>" +
+            "<p>Die Spalte mit den Veranstaltungstiteln muss „titel“ heißen.</p>";
+          return;
+        }
+
+        statusElement.classList.remove("error");
+        statusElement.textContent =
+          events.length + " Veranstaltungen gefunden";
+
+        eventsElement.innerHTML = "";
+
+        events.forEach(function(event) {
+          const article = document.createElement("article");
+          article.className = "event";
+
+          let inhalt = "";
+
+          if (event.tag || event.uhrzeit) {
+            inhalt +=
+              '<div class="event-time">' +
+              sichererText(event.tag) +
+              (event.tag && event.uhrzeit ? " · " : "") +
+              sichererText(event.uhrzeit) +
+              "</div>";
+          }
+
+          inhalt += "<h3>" + sichererText(event.titel) + "</h3>";
+
+          if (event.ort) {
+            inhalt += "<p>📍 " + sichererText(event.ort) + "</p>";
+          }
+
+          if (event.preis) {
+            inhalt += "<p>💶 " + sichererText(event.preis) + "</p>";
+          }
+
+          if (event.beschreibung) {
+            inhalt += "<p>" + sichererText(event.beschreibung) + "</p>";
+          }
+
+          if (event.kategorie) {
+            inhalt +=
+              '<span class="tag">' +
+              sichererText(event.kategorie) +
+              "</span>";
+          }
+
+          article.innerHTML = inhalt;
+          eventsElement.appendChild(article);
+        });
+      },
+
+      error: function(error) {
+        console.error("Ladefehler:", error);
+
+        statusElement.classList.add("error");
+        statusElement.innerHTML =
+          "<strong>Das Google Sheet konnte nicht geladen werden.</strong>" +
+          "<p>Bitte prüfe, ob das Events-Blatt im Web veröffentlicht ist.</p>";
+      }
+    });
+  </script>
+</body>
+</html>
