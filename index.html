@@ -2,11 +2,101 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Bundesrechtspflegertag 2026</title>
 
-  style.css
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f3f6fa;
+      color: #172033;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    header {
+      padding: 28px 20px;
+      color: white;
+      background: linear-gradient(135deg, #123868, #1f5d9d);
+    }
+
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 1.6rem;
+    }
+
+    header p {
+      margin: 0;
+      opacity: 0.9;
+    }
+
+    main {
+      width: min(760px, 100%);
+      margin: auto;
+      padding: 18px;
+    }
+
+    .card {
+      margin-bottom: 18px;
+      padding: 20px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 3px 14px rgba(15, 35, 60, 0.09);
+    }
+
+    .card h2 {
+      margin-top: 0;
+    }
+
+    #status {
+      margin-bottom: 18px;
+      padding: 12px;
+      background: #eef4fa;
+      border-radius: 8px;
+      color: #526174;
+    }
+
+    .event {
+      margin-bottom: 15px;
+      padding: 16px;
+      border: 1px solid #e1e8f0;
+      border-left: 5px solid #17508a;
+      border-radius: 10px;
+    }
+
+    .event h3 {
+      margin: 7px 0 10px;
+    }
+
+    .event p {
+      margin: 7px 0;
+      line-height: 1.45;
+    }
+
+    .event-time {
+      color: #17508a;
+      font-weight: bold;
+    }
+
+    .tag {
+      display: inline-block;
+      margin-top: 7px;
+      padding: 5px 9px;
+      color: #174a7d;
+      background: #eaf3fc;
+      border-radius: 20px;
+      font-size: 0.8rem;
+    }
+
+    .error {
+      color: #8b1e1e;
+      background: #fff0f0 !important;
+    }
+  </style>
 </head>
 
 <body>
@@ -23,13 +113,42 @@
 
     <section class="card">
       <h2>📅 Programm</h2>
-
       <div id="status">Veranstaltungen werden geladen …</div>
       <div id="events"></div>
     </section>
   </main>
 
-  https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.jsscript>
-  app.jsscript>
-</body>
-</html>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+  <script>
+    const CSV_URL =
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vSyQFnRpxoLtmmado9nrE2CKlA7rfjNkaYCf5WgqQBwLoAXa2ZL4-RCL6Fqy12zaDXUGrOx2cUEDMOz/pub?gid=473122804&single=true&output=csv";
+
+    const statusElement = document.getElementById("status");
+    const eventsElement = document.getElementById("events");
+
+    function text(wert) {
+      const element = document.createElement("div");
+      element.textContent = wert || "";
+      return element.innerHTML;
+    }
+
+    Papa.parse(CSV_URL, {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
+
+      complete: function(results) {
+        console.log("Erkannte Überschriften:", results.meta.fields);
+        console.log("Geladene Daten:", results.data);
+        console.log("Fehler:", results.errors);
+
+        const events = results.data.filter(function(event) {
+          return event.titel && event.titel.trim() !== "";
+        });
+
+        if (events.length === 0) {
+          statusElement.classList.add("error");
+          statusElement.innerHTML =
+            "<strong>Die Tabelle wurde geladen, aber es wurden keine Events erkannt.</strong>" +
+            "<p>Prüfe, ob die 
