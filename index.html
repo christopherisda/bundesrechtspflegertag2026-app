@@ -1172,21 +1172,21 @@
       return wrapper;
     }
 
-function parseCoordinate(value) {
+    function parseCoordinate(value) {
+      const text = String(value ?? "").trim();
 
-  const text = String(value || "").trim();
+      // Leere Koordinaten dürfen nicht als 0 interpretiert werden.
+      if (text === "") {
+        return null;
+      }
 
-  if (text === "") {
-    return null;
-  }
+      const number = Number(text.replace(",", "."));
+      return Number.isFinite(number) ? number : null;
+    }
 
-  const number =
-    Number(text.replace(",", "."));
-
-  return Number.isFinite(number)
-    ? number
-    : null;
-}
+    function hasCoordinates(item) {
+      return Number.isFinite(item.lat) && Number.isFinite(item.lng);
+    }
 
     /* --------------------------------------------------------
        FAVORITEN
