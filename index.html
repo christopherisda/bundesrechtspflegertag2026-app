@@ -1172,14 +1172,21 @@
       return wrapper;
     }
 
-    function parseCoordinate(value) {
-      const number = Number(String(value || "").replace(",", "."));
-      return Number.isFinite(number) ? number : null;
-    }
+function parseCoordinate(value) {
 
-    function hasCoordinates(item) {
-      return Number.isFinite(item.lat) && Number.isFinite(item.lng);
-    }
+  const text = String(value || "").trim();
+
+  if (text === "") {
+    return null;
+  }
+
+  const number =
+    Number(text.replace(",", "."));
+
+  return Number.isFinite(number)
+    ? number
+    : null;
+}
 
     /* --------------------------------------------------------
        FAVORITEN
