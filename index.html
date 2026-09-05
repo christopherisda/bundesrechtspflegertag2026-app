@@ -7,6 +7,13 @@
 
   <title>Bundesrechtspflegertag 2026</title>
 
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  >
+
   <style>
     /* ========================================================
        GRUNDEINSTELLUNGEN
@@ -362,6 +369,31 @@
        ORTE-ANSICHT
        ======================================================== */
 
+    #map {
+      width: 100%;
+      height: 430px;
+      margin-bottom: 16px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: #eef4f8;
+    }
+
+    .map-note {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .map-popup-title {
+      margin: 0 0 6px;
+      font-weight: 700;
+    }
+
+    .map-popup-events {
+      margin: 0;
+      padding-left: 18px;
+    }
+
     .places-list {
       display: grid;
       gap: 10px;
@@ -479,7 +511,11 @@
       </nav>
 
       <div id="events"></div>
-      <div id="places" hidden></div>
+      <div id="places" hidden>
+        <p class="map-note">Die Karte zeigt alle Veranstaltungsorte mit hinterlegten Koordinaten.</p>
+        <div id="map" aria-label="Karte der Veranstaltungsorte"></div>
+        <div id="places-list"></div>
+      </div>
     </section>
 
     <div class="footer-note">
@@ -492,6 +528,11 @@
        ======================================================== -->
 
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9coqIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
 
   <!-- ========================================================
        APP-LOGIK
@@ -508,7 +549,7 @@
       "https://docs.google.com/spreadsheets/d/e/2PACX-1vSyQFnRpxoLtmmado9nrE2CKlA7rfjNkaYCf5WgqQBwLoAXa2ZL4-RCL6Fqy12zaDXUGrOx2cUEDMOz/pub?gid=473122804&single=true&output=csv";
 
     // Veranstaltungen gelten so viele Tage lang als kürzlich geändert.
-    const CHANGE_NOTICE_DAYS = 14;
+    const CHANGE_NOTICE_DAYS = 2;
 
     const DAY_ORDER = {
       Montag: 1,
@@ -532,6 +573,7 @@
 
     const eventsElement = document.getElementById("events");
     const placesElement = document.getElementById("places");
+    const placesListElement = document.getElementById("places-list");
     const statusElement = document.getElementById("status");
     const todayInfoElement = document.getElementById("today-info");
     const headerCountElement = document.getElementById("header-count");
@@ -542,6 +584,8 @@
     let allEvents = [];
     let activeFilter = "Alle";
     let searchTerm = "";
+    let map = null;
+    let markerLayer = null;
 
     /* --------------------------------------------------------
        EREIGNISSE
@@ -640,6 +684,8 @@
         beschreibung: normalized.beschreibung || "",
         details: normalized.details || "",
         maps_link: normalized.maps_link || "",
+        lat: parseCoordinate(normalized.lat),
+        lng: parseCoordinate(normalized.lng),
         geaendert_am:
           normalized["geändert_am"] ||
           normalized.geaendert_am ||
@@ -971,7 +1017,7 @@
        -------------------------------------------------------- */
 
     function renderPlaces() {
-      placesElement.replaceChildren();
+      placesListElement.replaceChildren();
 
       const places = new Map();
 
@@ -981,13 +1027,28 @@
         }
 
         const key = event.ort.toLowerCase();
-        const existing = places.get(key);
+        let place = places.get(key);
 
-        if (!existing || (!existing.maps_link && event.maps_link)) {
-          places.set(key, {
+        if (!place) {
+          place = {
             ort: event.ort,
-            maps_link: event.maps_link
-          });
+            maps_link: event.maps_link,
+            lat: event.lat,
+            lng: event.lng,
+            events: []
+          };
+          places.set(key, place);
+        }
+
+        place.events.push(event);
+
+        if (!place.maps_link && event.maps_link) {
+          place.maps_link = event.maps_link;
+        }
+
+        if (!hasCoordinates(place) && hasCoordinates(event)) {
+          place.lat = event.lat;
+          place.lng = event.lng;
         }
       });
 
@@ -995,8 +1056,14 @@
         return a.ort.localeCompare(b.ort, "de");
       });
 
+      const mappedPlaces = sortedPlaces.filter(hasCoordinates);
+
       statusElement.classList.remove("error");
-      statusElement.textContent = sortedPlaces.length + " Veranstaltungsorte";
+      statusElement.textContent =
+        mappedPlaces.length + " Orte auf der Karte · " +
+        sortedPlaces.length + " Orte insgesamt";
+
+      renderMap(mappedPlaces);
 
       const list = document.createElement("div");
       list.className = "places-list";
@@ -1005,10 +1072,21 @@
         const row = document.createElement("div");
         row.className = "place-row";
 
+        const text = document.createElement("div");
+
         const name = document.createElement("div");
         name.className = "place-name";
         name.textContent = "📍 " + place.ort;
-        row.appendChild(name);
+        text.appendChild(name);
+
+        const count = document.createElement("div");
+        count.className = "updated-note";
+        count.textContent =
+          place.events.length +
+          (place.events.length === 1 ? " Veranstaltung" : " Veranstaltungen");
+        text.appendChild(count);
+
+        row.appendChild(text);
 
         if (isSafeHttpUrl(place.maps_link)) {
           const link = document.createElement("a");
@@ -1016,14 +1094,97 @@
           link.href = place.maps_link;
           link.target = "_blank";
           link.rel = "noopener noreferrer";
-          link.textContent = "Karte öffnen";
+          link.textContent = "Google Maps öffnen";
           row.appendChild(link);
         }
 
         list.appendChild(row);
       });
 
-      placesElement.appendChild(list);
+      placesListElement.appendChild(list);
+    }
+
+    function renderMap(places) {
+      if (typeof L === "undefined") {
+        document.getElementById("map").textContent =
+          "Die Kartenbibliothek konnte nicht geladen werden.";
+        return;
+      }
+
+      if (!map) {
+        map = L.map("map", {
+          scrollWheelZoom: false
+        }).setView([50.9778, 11.0250], 14);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 19,
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap-Mitwirkende</a>'
+        }).addTo(map);
+
+        markerLayer = L.layerGroup().addTo(map);
+      }
+
+      markerLayer.clearLayers();
+      const bounds = [];
+
+      places.forEach(function(place) {
+        const marker = L.marker([place.lat, place.lng]);
+        marker.bindPopup(createMapPopup(place));
+        marker.addTo(markerLayer);
+        bounds.push([place.lat, place.lng]);
+      });
+
+      window.setTimeout(function() {
+        map.invalidateSize();
+
+        if (bounds.length === 1) {
+          map.setView(bounds[0], 15);
+        } else if (bounds.length > 1) {
+          map.fitBounds(bounds, { padding: [24, 24] });
+        }
+      }, 0);
+    }
+
+    function createMapPopup(place) {
+      const wrapper = document.createElement("div");
+
+      const title = document.createElement("div");
+      title.className = "map-popup-title";
+      title.textContent = place.ort;
+      wrapper.appendChild(title);
+
+      const list = document.createElement("ul");
+      list.className = "map-popup-events";
+
+      place.events.forEach(function(event) {
+        const item = document.createElement("li");
+        item.textContent = [event.tag, event.uhrzeit, event.titel]
+          .filter(Boolean)
+          .join(" · ");
+        list.appendChild(item);
+      });
+
+      wrapper.appendChild(list);
+
+      if (isSafeHttpUrl(place.maps_link)) {
+        const link = document.createElement("a");
+        link.href = place.maps_link;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = "In Google Maps öffnen";
+        wrapper.appendChild(link);
+      }
+
+      return wrapper;
+    }
+
+    function parseCoordinate(value) {
+      const number = Number(String(value || "").replace(",", "."));
+      return Number.isFinite(number) ? number : null;
+    }
+
+    function hasCoordinates(item) {
+      return Number.isFinite(item.lat) && Number.isFinite(item.lng);
     }
 
     /* --------------------------------------------------------
