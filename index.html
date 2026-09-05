@@ -1,240 +1,360 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Bundesrechtspflegertag 2026</title>
+<title>Bundesrechtspflegertag 2026</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
 
-    body {
-      margin: 0;
-      background: #f3f6fa;
-      color: #172033;
-      font-family: Arial, Helvetica, sans-serif;
-    }
+*{
+    box-sizing:border-box;
+}
 
-    header {
-      padding: 28px 20px;
-      color: white;
-      background: linear-gradient(135deg, #123868, #1f5d9d);
-    }
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f7fb;
+    color:#222;
+}
 
-    header h1 {
-      margin: 0 0 8px;
-      font-size: 1.6rem;
-    }
+header{
+    background:linear-gradient(135deg,#123868,#1d5aa6);
+    color:white;
+    padding:30px 20px;
+}
 
-    header p {
-      margin: 0;
-      opacity: 0.9;
-    }
+header h1{
+    margin:0;
+    font-size:1.8rem;
+}
 
-    main {
-      width: min(760px, 100%);
-      margin: auto;
-      padding: 18px;
-    }
+header p{
+    margin-top:8px;
+    opacity:.9;
+}
 
-    .card {
-      margin-bottom: 18px;
-      padding: 20px;
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 3px 14px rgba(15, 35, 60, 0.09);
-    }
+main{
+    max-width:900px;
+    margin:auto;
+    padding:20px;
+}
 
-    .card h2 {
-      margin-top: 0;
-    }
+.card{
+    background:white;
+    border-radius:16px;
+    padding:20px;
+    margin-bottom:20px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
 
-    #status {
-      margin-bottom: 18px;
-      padding: 12px;
-      background: #eef4fa;
-      border-radius: 8px;
-      color: #526174;
-    }
+.card h2{
+    margin-top:0;
+}
 
-    .event {
-      margin-bottom: 15px;
-      padding: 16px;
-      border: 1px solid #e1e8f0;
-      border-left: 5px solid #17508a;
-      border-radius: 10px;
-    }
+#status{
+    background:#eef4ff;
+    padding:12px;
+    border-radius:10px;
+    margin-bottom:15px;
+}
 
-    .event:last-child {
-      margin-bottom: 0;
-    }
+.tabs{
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    margin-bottom:20px;
+}
 
-    .event h3 {
-      margin: 7px 0 10px;
-    }
+.tab{
+    border:none;
+    background:#dfeafc;
+    padding:10px 14px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+    white-space:nowrap;
+}
 
-    .event p {
-      margin: 7px 0;
-      line-height: 1.45;
-    }
+.tab.active{
+    background:#17508a;
+    color:white;
+}
 
-    .event-time {
-      color: #17508a;
-      font-weight: bold;
-    }
+.event{
+    border-left:5px solid #17508a;
+    background:#fafcff;
+    border-radius:10px;
+    padding:15px;
+    margin-bottom:15px;
+}
 
-    .tag {
-      display: inline-block;
-      margin-top: 7px;
-      padding: 5px 9px;
-      color: #174a7d;
-      background: #eaf3fc;
-      border-radius: 20px;
-      font-size: 0.8rem;
-    }
+.event:last-child{
+    margin-bottom:0;
+}
 
-    .error {
-      color: #8b1e1e !important;
-      background: #fff0f0 !important;
-    }
-  </style>
+.zeit{
+    color:#17508a;
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+.event h3{
+    margin:0 0 10px;
+}
+
+.ort{
+    margin-bottom:8px;
+}
+
+.tag{
+    display:inline-block;
+    background:#eaf3fc;
+    color:#17508a;
+    padding:4px 8px;
+    border-radius:16px;
+    font-size:.85rem;
+}
+
+.preis{
+    margin-top:8px;
+    color:#666;
+}
+
+.leer{
+    text-align:center;
+    padding:30px;
+    color:#666;
+}
+
+</style>
 </head>
 
 <body>
-  <header>
+
+<header>
     <h1>⚖️ Bundesrechtspflegertag 2026</h1>
     <p>Erfurt · 21.09. bis 25.09.2026</p>
-  </header>
+</header>
 
-  <main>
-    <section class="card">
-      <h2>Willkommen</h2>
-      <p>Offizielle Veranstaltungsübersicht für Erfurt 2026.</p>
-    </section>
+<main>
 
-<section class="card">
-  <h2>📅 Programm</h2>
+<div class="card">
 
-  <div id="status">
-    Veranstaltungen werden geladen …
-  </div>
+    <h2>📅 Veranstaltungsprogramm</h2>
 
-  <div class="tabs">
-    <button class="tab active" onclick="filterDay('Alle', this)">Alle</button>
-    <button class="tab" onclick="filterDay('Montag', this)">Mo</button>
-    <button class="tab" onclick="filterDay('Dienstag', this)">Di</button>
-    <button class="tab" onclick="filterDay('Mittwoch', this)">Mi</button>
-    <button class="tab" onclick="filterDay('Donnerstag', this)">Do</button>
-    <button class="tab" onclick="filterDay('Freitag', this)">Fr</button>
-  </div>
+    <div id="status">
+        Veranstaltungen werden geladen...
+    </div>
 
-  <div id="events"></div>
-</section>
-  </main>
+    <div class="tabs">
 
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+        <button class="tab active"
+            onclick="filterDay('Alle',this)">
+            Alle
+        </button>
 
-  <script>
-    const CSV_URL =
-      "https://docs.google.com/spreadsheets/d/e/2PACX-1vSyQFnRpxoLtmmado9nrE2CKlA7rfjNkaYCf5WgqQBwLoAXa2ZL4-RCL6Fqy12zaDXUGrOx2cUEDMOz/pub?gid=473122804&single=true&output=csv";
+        <button class="tab"
+            onclick="filterDay('Montag',this)">
+            Montag
+        </button>
 
-    const statusElement = document.getElementById("status");
-    const eventsElement = document.getElementById("events");
+        <button class="tab"
+            onclick="filterDay('Dienstag',this)">
+            Dienstag
+        </button>
 
-    statusElement.textContent = "Verbindung zum Programm wird hergestellt …";
-    console.log("JavaScript wurde gestartet.");
+        <button class="tab"
+            onclick="filterDay('Mittwoch',this)">
+            Mittwoch
+        </button>
 
-    function sichererText(wert) {
-      const element = document.createElement("div");
-      element.textContent = wert || "";
-      return element.innerHTML;
+        <button class="tab"
+            onclick="filterDay('Donnerstag',this)">
+            Donnerstag
+        </button>
+
+        <button class="tab"
+            onclick="filterDay('Freitag',this)">
+            Freitag
+        </button>
+
+    </div>
+
+    <div id="events"></div>
+
+</div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+<script>
+
+const CSV_URL =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vSyQFnRpxoLtmmado9nrE2CKlA7rfjNkaYCf5WgqQBwLoAXa2ZL4-RCL6Fqy12zaDXUGrOx2cUEDMOz/pub?gid=473122804&single=true&output=csv";
+
+const eventsElement =
+document.getElementById("events");
+
+const statusElement =
+document.getElementById("status");
+
+let alleEvents = [];
+
+Papa.parse(CSV_URL, {
+
+    download:true,
+
+    header:true,
+
+    skipEmptyLines:true,
+
+    transformHeader(header){
+        return header.trim().toLowerCase();
+    },
+
+    complete:function(results){
+
+        alleEvents =
+        results.data.filter(
+            e => e.titel && e.titel.trim() !== ""
+        );
+
+        sortiereEvents();
+
+        statusElement.innerHTML =
+            "<strong>" +
+            alleEvents.length +
+            " Veranstaltungen gefunden</strong>";
+
+        renderEvents(alleEvents);
+    },
+
+    error:function(){
+
+        statusElement.innerHTML =
+            "Programm konnte nicht geladen werden.";
     }
 
-    Papa.parse(CSV_URL, {
-      download: true,
-      header: true,
-      skipEmptyLines: true,
+});
 
-      transformHeader: function(header) {
-        return header.trim().toLowerCase();
-      },
+function sortiereEvents(){
 
-      complete: function(results) {
-        console.log("Überschriften:", results.meta.fields);
-        console.log("Daten:", results.data);
-        console.log("CSV-Fehler:", results.errors);
+    alleEvents.sort(function(a,b){
 
-        const events = results.data.filter(function(event) {
-          return event.titel && event.titel.trim() !== "";
-        });
+        return (a.uhrzeit || "")
+            .localeCompare(b.uhrzeit || "");
 
-        if (events.length === 0) {
-          statusElement.classList.add("error");
-          statusElement.innerHTML =
-            "<strong>Die Tabelle wurde geladen, aber keine Veranstaltungen wurden erkannt.</strong>" +
-            "<p>Die Spalte mit den Veranstaltungstiteln muss „titel“ heißen.</p>";
-          return;
-        }
-
-        statusElement.classList.remove("error");
-        statusElement.textContent =
-          events.length + " Veranstaltungen gefunden";
-
-        eventsElement.innerHTML = "";
-
-        events.forEach(function(event) {
-          const article = document.createElement("article");
-          article.className = "event";
-
-          let inhalt = "";
-
-          if (event.tag || event.uhrzeit) {
-            inhalt +=
-              '<div class="event-time">' +
-              sichererText(event.tag) +
-              (event.tag && event.uhrzeit ? " · " : "") +
-              sichererText(event.uhrzeit) +
-              "</div>";
-          }
-
-          inhalt += "<h3>" + sichererText(event.titel) + "</h3>";
-
-          if (event.ort) {
-            inhalt += "<p>📍 " + sichererText(event.ort) + "</p>";
-          }
-
-          if (event.preis) {
-            inhalt += "<p>💶 " + sichererText(event.preis) + "</p>";
-          }
-
-          if (event.beschreibung) {
-            inhalt += "<p>" + sichererText(event.beschreibung) + "</p>";
-          }
-
-          if (event.kategorie) {
-            inhalt +=
-              '<span class="tag">' +
-              sichererText(event.kategorie) +
-              "</span>";
-          }
-
-          article.innerHTML = inhalt;
-          eventsElement.appendChild(article);
-        });
-      },
-
-      error: function(error) {
-        console.error("Ladefehler:", error);
-
-        statusElement.classList.add("error");
-        statusElement.innerHTML =
-          "<strong>Das Google Sheet konnte nicht geladen werden.</strong>" +
-          "<p>Bitte prüfe, ob das Events-Blatt im Web veröffentlicht ist.</p>";
-      }
     });
-  </script>
+}
+
+function renderEvents(liste){
+
+    eventsElement.innerHTML = "";
+
+    if(liste.length === 0){
+
+        eventsElement.innerHTML =
+        '<div class="leer">Keine Veranstaltungen vorhanden.</div>';
+
+        return;
+    }
+
+    liste.forEach(function(event){
+
+        const artikel =
+        document.createElement("div");
+
+        artikel.className = "event";
+
+        artikel.innerHTML =
+
+        '<div class="zeit">' +
+
+        (event.tag || "") +
+
+        ' · ' +
+
+        (event.uhrzeit || "") +
+
+        '</div>' +
+
+        '<h3>' +
+
+        (event.titel || "") +
+
+        '</h3>' +
+
+        '<div class="ort">📍 ' +
+
+        (event.ort || "") +
+
+        '</div>' +
+
+        '<span class="tag">' +
+
+        (event.kategorie || "") +
+
+        '</span>' +
+
+        '<div class="preis">💶 ' +
+
+        (event.preis || "") +
+
+        '</div>' +
+
+        '<p>' +
+
+        (event.beschreibung || "") +
+
+        '</p>';
+
+        eventsElement
+            .appendChild(artikel);
+
+    });
+
+}
+
+function filterDay(tag,button){
+
+    document
+        .querySelectorAll(".tab")
+        .forEach(t =>
+            t.classList.remove("active"));
+
+    button.classList.add("active");
+
+    if(tag === "Alle"){
+
+        renderEvents(alleEvents);
+
+        statusElement.innerHTML =
+            "<strong>" +
+            alleEvents.length +
+            " Veranstaltungen</strong>";
+
+        return;
+    }
+
+    const gefiltert =
+        alleEvents.filter(
+            e => e.tag === tag
+        );
+
+    statusElement.innerHTML =
+        "<strong>" +
+        gefiltert.length +
+        " Veranstaltungen am " +
+        tag +
+        "</strong>";
+
+    renderEvents(gefiltert);
+}
+
+</script>
+
 </body>
 </html>
