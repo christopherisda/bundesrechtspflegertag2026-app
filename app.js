@@ -1,40 +1,35 @@
-const CSV_URL =
-"https://docs.google.com/spreadsheets/d/e/2PACX-1vSyQFnRpxoLtmmado9nrE2CKlA7rfjNkaYCf5WgqQBwLoAXa2ZL4-RCL6Fqy12zaDXUGrOx2cUEDMOz/pub?gid=473122804&single=true&output=csv";
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-Papa.parse(CSV_URL, {
-  download: true,
-  header: true,
+  <title>Bundesrechtspflegertag 2026</title>
 
-  complete: function(results) {
+  style.css
+</head>
 
-    const container = document.getElementById("events");
+<body>
+  <header>
+    <h1>⚖️ Bundesrechtspflegertag 2026</h1>
+    <p>Erfurt · 21.09. bis 25.09.2026</p>
+  </header>
 
-    container.innerHTML = "";
+  <main>
+    <section class="card">
+      <h2>Willkommen</h2>
+      <p>Offizielle Veranstaltungsübersicht für Erfurt 2026.</p>
+    </section>
 
-    results.data.forEach(event => {
+    <section class="card">
+      <h2>📅 Programm</h2>
 
-      if (!event.titel) return;
+      <div id="status">Veranstaltungen werden geladen …</div>
+      <div id="events"></div>
+    </section>
+  </main>
 
-      const div = document.createElement("div");
-      div.className = "event";
-
-      div.innerHTML = `
-        <div class="time">
-          ${event.tag || ""}
-          ${event.uhrzeit || ""}
-        </div>
-
-        <h3>${event.titel}</h3>
-
-        <p>📍 ${event.ort || ""}</p>
-
-        <div class="tag">
-          ${event.kategorie || ""}
-        </div>
-      `;
-
-      container.appendChild(div);
-
-    });
-  }
-});
+  https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.jsscript>
+  app.jsscript>
+</body>
+</html>
