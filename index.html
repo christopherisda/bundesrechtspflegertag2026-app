@@ -115,11 +115,24 @@
       <p>Offizielle Veranstaltungsübersicht für Erfurt 2026.</p>
     </section>
 
-    <section class="card">
-      <h2>📅 Programm</h2>
-      <div id="status">Veranstaltungen werden geladen …</div>
-      <div id="events"></div>
-    </section>
+<section class="card">
+  <h2>📅 Programm</h2>
+
+  <div id="status">
+    Veranstaltungen werden geladen …
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="filterDay('Alle', this)">Alle</button>
+    <button class="tab" onclick="filterDay('Montag', this)">Mo</button>
+    <button class="tab" onclick="filterDay('Dienstag', this)">Di</button>
+    <button class="tab" onclick="filterDay('Mittwoch', this)">Mi</button>
+    <button class="tab" onclick="filterDay('Donnerstag', this)">Do</button>
+    <button class="tab" onclick="filterDay('Freitag', this)">Fr</button>
+  </div>
+
+  <div id="events"></div>
+</section>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
