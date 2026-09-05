@@ -89,3 +89,21 @@ code {
   background: #edf1f5;
   border-radius: 4px;
 }
+.tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
+.tab {
+  border: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #eaf3fc;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.tab.active {
+  background: #17508a;
