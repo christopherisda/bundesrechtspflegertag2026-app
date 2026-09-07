@@ -792,7 +792,7 @@ function renderAgendaBoard(list){
         map.createPane("hotelMarkers");map.getPane("hotelMarkers").style.zIndex="660";
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:'&copy; OpenStreetMap-Mitwirkende'}).addTo(map);
         // Version 11.4: Veranstaltungsorte werden geclustert (viele nahe Orte z. B. rund um den Dom), Hotel/Bahnhof bleiben als feste Orientierungspunkte immer einzeln sichtbar.
-        layer=(typeof L.markerClusterGroup==="function"?L.markerClusterGroup({maxClusterRadius:40,showCoverageOnHover:false,spiderfyOnMaxZoom:true}):L.layerGroup()).addTo(map);
+        layer=(typeof L.markerClusterGroup==="function"?L.markerClusterGroup({maxClusterRadius:20,showCoverageOnHover:false,spiderfyOnMaxZoom:true}):L.layerGroup()).addTo(map);
         referenceLayer=L.layerGroup().addTo(map)
       }
       layer.clearLayers();referenceLayer.clearLayers();placeMarkerIndex.clear();
