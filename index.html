@@ -490,7 +490,7 @@
   <script>
     "use strict";
     // Version 11.0: zentrale Konfiguration – Versionsnummer, Build-Datum und App-Name werden ausschließlich hier gepflegt.
-    const APP_CONFIG={version:"11.17",buildDate:"10.09.2026",appName:"Bundesrechtspflegertag 2026"};
+    const APP_CONFIG={version:"11.17",buildDate:"21.09.2026",appName:"Bundesrechtspflegertag 2026"};
     const menuToggle=document.getElementById("menu-toggle"),sideMenu=document.getElementById("side-menu"),menuClose=document.getElementById("menu-close"),menuBackdrop=document.getElementById("menu-backdrop");
     const logoHome=document.getElementById("logo-home");
     function setMenu(open){sideMenu.classList.toggle("open",open);menuBackdrop.classList.toggle("open",open);menuBackdrop.hidden=!open;sideMenu.setAttribute("aria-hidden",String(!open));menuToggle.setAttribute("aria-expanded",String(open));menuToggle.setAttribute("aria-label",open?"Menü schließen":"Menü öffnen");document.body.classList.toggle("menu-open",open);if(open)menuClose.focus();else menuToggle.focus()}
